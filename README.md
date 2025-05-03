@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🌐 Highly Available Web Server Deployment Using Terraform on AWS
 
 This project automates the deployment of a **highly available**, **scalable**, and **fault-tolerant** web server infrastructure using **Terraform** on **Amazon Web Services (AWS)**.
@@ -109,3 +110,92 @@ Visit it in your browser to see:
 To tear down all AWS resources created by this Terraform project:
 ----terraform destroy
 
+=======
+🚀 AWS ALB + EC2 with WAF (India Only) - Terraform Setup
+
+This project deploys a complete AWS environment using Terraform:
+
+A VPC with public subnets
+
+EC2 instance with Apache Web Server
+
+Application Load Balancer (ALB)
+
+AWS WAF to allow only India-based traffic
+
+Security groups and routing
+
+Auto installation of Apache on EC2
+
+
+
+📦 Prerequisites
+Before you begin, make sure you have:
+
+✅ Terraform installed
+
+✅ AWS CLI configured with credentials (aws configure)
+
+✅ A valid EC2 key pair in ap-south-1 region (used in key_name = "personal")
+
+
+🏗️ Setup Steps
+
+1. Clone the Repository
+git clone <your-repo-url>
+cd <your-repo-directory>
+
+2. Initialize Terraform
+terraform init
+
+3. Preview the Infrastructure
+terraform plan
+
+4. Apply the Configuration
+terraform apply
+
+When prompted, type "yes" to approve the deployment.
+
+💡 Note: This may take a few minutes to complete.
+
+
+🌐 Access Your Web Application
+Once the deployment is done, Terraform will output resources.
+
+🔍 Find the ALB DNS Name
+To get the ALB DNS:
+
+aws elbv2 describe-load-balancers \
+  --names india-alb \
+  --region ap-south-1 \
+  --query "LoadBalancers[0].DNSName"
+
+
+Or go to the AWS Console > EC2 > Load Balancers and copy the DNS name of india-alb.
+
+🔗 Visit in Browser
+Open the following in your browser:
+
+http://<alb-dns-name>/index.html
+
+If you're accessing from outside India, you will be blocked by WAF. You can test using a VPN set to an Indian IP.
+
+
+🔒 WAF Protection (India Only)
+This project includes a WAFv2 ACL that only allows HTTP traffic originating from India ("IN" country code).
+
+🧹 Cleanup
+To destroy all AWS resources:
+
+terraform destroy
+
+
+📁 File Structure
+.
+├── main.tf            # Full Terraform configuration
+├── README.md          # This guide
+
+✍️ Author
+Akshay Pratap Upadhyay
+Cloud Engineer | Web Developer
+>>>>>>> e300e8d (Initial commit - Terraform Web Server with WAF Access Prevent)

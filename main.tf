@@ -171,3 +171,46 @@ resource "aws_lb_listener" "http_listener" {
     target_group_arn = aws_lb_target_group.tg.arn
   }
 }
+
+# WAFv2 Web ACL to Allow Only India Traffic
+resource "aws_wafv2_web_acl" "india_acl" {
+  name        = "india-only-acl"
+  scope       = "REGIONAL"
+  description = "Allow only India traffic"
+  default_action {
+    block {}
+  }
+
+  rule {
+    name     = "AllowIndia"
+    priority = 1
+
+    action {
+      allow {}
+    }
+
+    statement {
+      geo_match_statement {
+        country_codes = ["IN"] # ISO country code for India
+      }
+    }
+
+    visibility_config {
+      sampled_requests_enabled = true
+      cloudwatch_metrics_enabled = true
+      metric_name = "indiaGeoMatch"
+    }
+  }
+
+  visibility_config {
+    sampled_requests_enabled = true
+    cloudwatch_metrics_enabled = true
+    metric_name = "indiaOnlyAcl"
+  }
+}
+
+# Associate WAF with ALB
+resource "aws_wafv2_web_acl_association" "alb_acl_association" {
+  resource_arn = aws_lb.alb.arn
+  web_acl_arn  = aws_wafv2_web_acl.india_acl.arn
+}
